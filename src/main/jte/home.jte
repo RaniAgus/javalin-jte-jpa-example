@@ -3,7 +3,6 @@
 @template.base(
 title = @`Home`,
 styles = @``,
-scripts = @``,
 body = @`
     <body>
         <div class="container">
@@ -14,11 +13,15 @@ body = @`
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <button class="btn btn-primary" onclick="window.location.href='/logout'">
+                    <button class="btn btn-primary" onclick="window.location.href = '/logout'">
+                        Create User
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.location.href='/logout'">
                         Logout
                     </button>
                 </div>
             </div>
         </div>
     </body>
-`)
+`,
+scripts = @``)

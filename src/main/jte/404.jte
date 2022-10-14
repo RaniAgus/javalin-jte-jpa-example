@@ -3,7 +3,6 @@
 @template.base(
 title = @`Not Found`,
 styles = @``,
-scripts = @``,
 body = @`
     <body>
         <div class="container">
@@ -16,4 +15,5 @@ body = @`
             </div>
         </div>
     </body>
-`)
+`,
+scripts = @``)

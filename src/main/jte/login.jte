@@ -3,7 +3,6 @@
 @template.base(
 title = @`Login`,
 styles = @`<link rel="stylesheet" href="/css/login.css" />`,
-scripts = @``,
 body = @`
     <body class="body-signin">
     <div class="container">
@@ -25,4 +24,5 @@ body = @`
         </form>
     </div>
     </body>
-`)
+`,
+scripts = @``)
