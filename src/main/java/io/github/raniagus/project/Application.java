@@ -27,6 +27,7 @@ public class Application extends Entrypoint {
       get("/login", userController::renderLogin, Role.ANYONE);
       post("/login", userController::login, Role.ANYONE);
       get("/register", userController::renderRegister, Role.ADMIN);
+      post("/register", userController::register, Role.ADMIN);
       get("/logout", userController::logout, Role.USER, Role.ADMIN);
       after(ctx -> WithSimplePersistenceUnit.dispose());
     }).exception(NotFoundResponse.class, userController::notFound)

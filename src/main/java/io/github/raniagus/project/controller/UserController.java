@@ -1,5 +1,7 @@
 package io.github.raniagus.project.controller;
 
+import io.github.raniagus.project.model.Role;
+import io.github.raniagus.project.model.User;
 import io.github.raniagus.project.repository.UserRepository;
 import io.github.raniagus.project.view.LoginViewModel;
 import io.github.raniagus.project.view.NotFoundViewModel;
@@ -24,7 +26,7 @@ public class UserController implements Controller {
   }
 
   public void renderLogin(Context ctx) {
-    var redirect = ctx.queryParam("redirect");
+    var redirect = ctx.queryParamAsClass("redirect", String.class).getOrDefault("/");
     var error = ctx.queryParam("error");
 
     render(ctx, new LoginViewModel(redirect, decode(error)));
@@ -46,7 +48,6 @@ public class UserController implements Controller {
       ctx.status(HttpStatus.BAD_REQUEST);
       ctx.json(collectErrors(username, password));
     } catch (NotFoundResponse e) {
-      ctx.status(HttpStatus.UNAUTHORIZED);
       ctx.redirect("/login?" + encode(Map.of("redirect", redirect, "error", e.getMessage())));
     }
   }
@@ -63,5 +64,25 @@ public class UserController implements Controller {
 
   public void renderRegister(Context ctx) {
     render(ctx, new RegisterViewModel(ctx.queryParam("error")));
+  }
+
+  public void register(Context ctx) {
+    var username = ctx.formParamAsClass("username", String.class)
+        .check(u -> userRepository.getByUsername(u).isEmpty(), "Username already exists");
+    var password = ctx.formParamAsClass("password", String.class)
+        .check(p -> p.equals(ctx.formParam("confirm-password")), "Passwords do not match");
+
+    try {
+      withTransaction(() -> {
+        var user = new User(username.get(), password.get(), Role.USER);
+        userRepository.save(user);
+      });
+      ctx.redirect("/register?success=true");
+    } catch (ValidationException e) {
+      ctx.status(HttpStatus.BAD_REQUEST);
+      ctx.json(collectErrors(username, password));
+    } catch (IllegalArgumentException e) {
+      ctx.redirect("/register?" + encode(Map.of("error", e.getMessage())));
+    }
   }
 }
