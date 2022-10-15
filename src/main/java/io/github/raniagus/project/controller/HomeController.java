@@ -1,5 +1,6 @@
 package io.github.raniagus.project.controller;
 
+import io.github.raniagus.project.model.Role;
 import io.github.raniagus.project.model.User;
 import io.github.raniagus.project.repository.UserRepository;
 import io.github.raniagus.project.view.HomeViewModel;
@@ -16,7 +17,8 @@ public class HomeController implements Controller {
   }
 
   public void index(Context ctx) {
-    render(ctx, new HomeViewModel(getUser(ctx).getUsername()));
+    User user = getUser(ctx);
+    render(ctx, new HomeViewModel(user.getUsername(), user.getRole() == Role.ADMIN));
   }
 
   private User getUser(Context ctx) {

@@ -4,8 +4,9 @@ import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.resolve.DirectoryCodeResolver;
+import io.github.raniagus.project.access.UserAccessManager;
 import io.github.raniagus.project.controller.HomeController;
-import io.github.raniagus.project.controller.SecurityController;
+import io.github.raniagus.project.controller.UserController;
 import io.github.raniagus.project.repository.UserRepository;
 
 import java.nio.file.Path;
@@ -19,7 +20,8 @@ public abstract class Entrypoint {
   public static final UserRepository userRepository = new UserRepository();
 
   // Controller layer
-  public static final SecurityController securityController = new SecurityController(userRepository);
+  public static final UserAccessManager userAccessManager = new UserAccessManager(userRepository);
+  public static final UserController userController = new UserController(userRepository);
   public static final HomeController homeController = new HomeController(userRepository);
 
   static {

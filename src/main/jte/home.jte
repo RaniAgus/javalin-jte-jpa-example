@@ -5,23 +5,25 @@ title = @`Home`,
 styles = @``,
 body = @`
     <body>
-        <div class="container">
-            <div class="row">
+        <main class="container">
+            <section class="row">
                 <div class="col-md-12">
                     <h1>Hello, ${vm.getUsername()}!</h1>
                 </div>
-            </div>
-            <div class="row">
+            </section>
+            <section class="row">
                 <div class="col-md-12">
-                    <button class="btn btn-primary" onclick="window.location.href = '/logout'">
-                        Create User
-                    </button>
+                    @if(vm.isAdmin())
+                        <button class="btn btn-primary" onclick="window.location.href = '/register'">
+                            Register User
+                        </button>
+                    @endif
                     <button class="btn btn-secondary" onclick="window.location.href='/logout'">
                         Logout
                     </button>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
     </body>
 `,
 scripts = @``)
