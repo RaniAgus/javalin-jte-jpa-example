@@ -1,4 +1,4 @@
-package io.github.raniagus.project.view;
+package io.github.raniagus.core.view;
 
 public interface ViewModel {
   String getTemplateName();

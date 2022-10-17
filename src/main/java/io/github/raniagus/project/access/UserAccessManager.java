@@ -9,11 +9,15 @@ import io.javalin.http.NotFoundResponse;
 import io.javalin.security.AccessManager;
 import io.javalin.security.RouteRole;
 import java.util.Set;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
+@Singleton
 public class UserAccessManager implements AccessManager {
   private UserRepository userRepository;
 
+  @Inject
   public UserAccessManager(UserRepository userRepository) {
     this.userRepository = userRepository;
   }

@@ -1,4 +1,4 @@
-package io.github.raniagus.project.repository;
+package io.github.raniagus.core.repository;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;

@@ -1,28 +1,15 @@
-package io.github.raniagus.project;
+package io.github.raniagus.core;
 
 import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.resolve.DirectoryCodeResolver;
-import io.github.raniagus.project.access.UserAccessManager;
-import io.github.raniagus.project.controller.HomeController;
-import io.github.raniagus.project.controller.UserController;
-import io.github.raniagus.project.repository.UserRepository;
-
 import java.nio.file.Path;
 import java.util.Arrays;
 
 public abstract class Entrypoint {
   public static final Boolean isProd = notNull("DB_URL", "DB_USERNAME", "DB_PASSWORD");
   public static final TemplateEngine templateEngine;
-
-  // Repository layer
-  public static final UserRepository userRepository = new UserRepository();
-
-  // Controller layer
-  public static final UserAccessManager userAccessManager = new UserAccessManager(userRepository);
-  public static final UserController userController = new UserController(userRepository);
-  public static final HomeController homeController = new HomeController(userRepository);
 
   static {
     if (isProd) {

@@ -1,5 +1,7 @@
 package io.github.raniagus.project.view;
 
+import io.github.raniagus.core.view.ViewModel;
+
 public class RegisterViewModel implements ViewModel {
   private String error;
 

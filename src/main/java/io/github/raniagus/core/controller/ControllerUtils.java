@@ -1,6 +1,6 @@
-package io.github.raniagus.project.controller;
+package io.github.raniagus.core.controller;
 
-import io.github.raniagus.project.view.ViewModel;
+import io.github.raniagus.core.view.ViewModel;
 import io.javalin.http.Context;
 import io.javalin.validation.Validator;
 

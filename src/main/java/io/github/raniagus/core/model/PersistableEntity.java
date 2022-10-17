@@ -1,4 +1,4 @@
-package io.github.raniagus.project.model;
+package io.github.raniagus.core.model;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

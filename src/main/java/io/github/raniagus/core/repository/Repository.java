@@ -1,16 +1,16 @@
-package io.github.raniagus.project.repository;
+package io.github.raniagus.core.repository;
 
 import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import io.github.raniagus.project.model.PersistableEntity;
 
+import io.github.raniagus.core.model.PersistableEntity;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static io.github.raniagus.project.repository.RepositoryUtils.getWhereClause;
-import static io.github.raniagus.project.repository.RepositoryUtils.paramsToMap;
-import static io.github.raniagus.project.repository.RepositoryUtils.setParameters;
+import static io.github.raniagus.core.repository.RepositoryUtils.getWhereClause;
+import static io.github.raniagus.core.repository.RepositoryUtils.paramsToMap;
+import static io.github.raniagus.core.repository.RepositoryUtils.setParameters;
 
 public interface Repository<T extends PersistableEntity> extends WithSimplePersistenceUnit {
 

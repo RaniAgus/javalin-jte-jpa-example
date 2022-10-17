@@ -1,4 +1,4 @@
-package io.github.raniagus.project.controller;
+package io.github.raniagus.core.controller;
 
 import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 

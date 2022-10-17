@@ -1,5 +1,6 @@
 package io.github.raniagus.project.model;
 
+import io.github.raniagus.core.model.PersistableEntity;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

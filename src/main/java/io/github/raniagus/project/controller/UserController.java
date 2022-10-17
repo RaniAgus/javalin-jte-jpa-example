@@ -1,5 +1,6 @@
 package io.github.raniagus.project.controller;
 
+import io.github.raniagus.core.controller.Controller;
 import io.github.raniagus.project.model.Role;
 import io.github.raniagus.project.model.User;
 import io.github.raniagus.project.repository.UserRepository;
@@ -11,16 +12,20 @@ import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.validation.ValidationException;
 import java.util.Map;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-import static io.github.raniagus.project.controller.ControllerUtils.decode;
-import static io.github.raniagus.project.controller.ControllerUtils.encode;
-import static io.github.raniagus.project.controller.ControllerUtils.render;
+import static io.github.raniagus.core.controller.ControllerUtils.decode;
+import static io.github.raniagus.core.controller.ControllerUtils.encode;
+import static io.github.raniagus.core.controller.ControllerUtils.render;
 import static io.javalin.validation.JavalinValidation.collectErrors;
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
+@Singleton
 public class UserController implements Controller {
   private UserRepository userRepository;
 
+  @Inject
   public UserController(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
