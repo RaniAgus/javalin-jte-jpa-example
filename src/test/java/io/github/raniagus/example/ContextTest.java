@@ -33,16 +33,17 @@ public class ContextTest implements PersistenceTest, WithSimplePersistenceUnit {
     withTransaction(() -> {
       var user = entityManager().find(User.class, 1L);
       assertThat(user).isNotNull();
-      assertThat(user.getUsername()).isEqualTo("raniagus");
+      assertThat(user.getFirstName()).isEqualTo("Agustin");
+      assertThat(user.getLastName()).isEqualTo("Ranieri");
+      assertThat(user.getEmail()).isEqualTo("raniagus@github.com");
       assertThat(user.getPassword()).isEqualTo(sha256Hex("password"));
       assertThat(user.getRole()).isEqualTo(Role.USER);
     });
   }
 
   @Test
-
   private void persistUser() {
-    var user = new User("raniagus", "password", Role.USER);
+    var user = new User("Agustin", "Ranieri", "raniagus@github.com", "password", Role.USER);
     entityManager().persist(user);
   }
 }
