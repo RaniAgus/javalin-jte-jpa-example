@@ -1,4 +1,4 @@
-@param io.github.raniagus.project.view.NotFoundViewModel vm
+@param io.github.raniagus.example.view.NotFoundViewModel vm
 
 @template.base(
 title = @`Not Found`,

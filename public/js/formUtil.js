@@ -40,8 +40,8 @@ const FormSubmitHandlerBuilder = function (formId) {
       return this;
     },
     /**
-     * @desc This function is used to register a submit handler for the form
-     * considering all the registered handlers
+     * @desc This function is used to register a handler of type submit for the
+     * form considering all the registered handlers
      */
     build: function () {
       document.getElementById(formId).onsubmit = () => {

@@ -1,4 +1,4 @@
-# javalin-web-template
+# javalin-web-example
 
 ## Dependencies
 
@@ -17,20 +17,20 @@
 ### PostgreSQL
 
 - Install [PostgreSQL](https://www.postgresql.org/download/)
-- Create a database named `project`
-- Run `io.github.raniagus.project.Bootstrap` to create the tables
+- Create a database named `example`
+- Run `io.github.raniagus.example.Bootstrap` to create the tables
 
 ### Docker Compose
 
 - Install [Docker](https://docs.docker.com/get-docker/) and
   [Docker Compose](https://docs.docker.com/compose/install/)
-- Run `docker volume create --name=project-data` to create a volume for the database
+- Run `docker volume create --name=example-data` to create a volume for the database
 - Run `docker-compose up -d db` to start the database
-- Run `io.github.raniagus.project.Bootstrap` to create the tables
+- Run `io.github.raniagus.example.Bootstrap` to seed the database with initial data
 
 ## Running the Application
 
-- Run `io.github.raniagus.project.Application` to start the application
+- Run `io.github.raniagus.example.Application` to start the application
 
 ## Deploy
 
@@ -53,3 +53,7 @@
       - `DB_PASSWORD`: The database password
       - `PORT`: The port to listen on
     - Generate a new domain name provided by Railway
+
+### Fly.io + CockroachDB
+
+Work in progress

@@ -1,25 +1,14 @@
-# TODO: configure the following to your needs
-#
-# The volume name to be used for storing the data
-# (default: "project-data")
-#
-# The container name to be used for the data container
-# (default: "project-db")
-#
-# The container name to be used for the web container
-# (default: "project-web")
-
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
       target: web
-    container_name: project-web
+    container_name: example-web
     ports:
       - ${PORT-:8080}:8080
     environment:
-      - DB_URL=jdbc:postgresql://db:5432/${DB_NAME:-project}
+      - DB_URL=jdbc:postgresql://db:5432/${DB_NAME:-example}
       - DB_USERNAME=${DB_USERNAME:-jpademo}
       - DB_PASSWORD=${DB_PASSWORD:-jpademo}
     depends_on:
@@ -27,11 +16,11 @@ services:
 
   db:
     image: postgres:12.12-alpine
-    container_name: project-db
+    container_name: example-db
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_DB=${DB_NAME:-project}
+      - POSTGRES_DB=${DB_NAME:-example}
       - POSTGRES_USER=${DB_USERNAME:-jpademo}
       - POSTGRES_PASSWORD=${DB_PASSWORD:-jpademo}
     volumes:
@@ -39,5 +28,5 @@ services:
 
 volumes:
   postgres-data:
-    name: project-data
+    name: example-data
     external: true

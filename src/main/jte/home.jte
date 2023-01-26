@@ -1,4 +1,4 @@
-@param io.github.raniagus.project.view.HomeViewModel vm
+@param io.github.raniagus.example.view.HomeViewModel vm
 
 @template.base(
 title = @`Home`,
@@ -8,19 +8,21 @@ body = @`
         <main class="container">
             <section class="row">
                 <div class="col-md-12">
-                    <h1>Hello, ${vm.getUsername()}!</h1>
+                    <h1>Hello, ${vm.getFirstName()}!</h1>
                 </div>
             </section>
             <section class="row">
                 <div class="col-md-12">
                     @if(vm.isAdmin())
-                        <button class="btn btn-primary" onclick="window.location.href = '/register'">
+                        <a class="btn btn-primary" href="/register">
                             Register User
-                        </button>
+                        </a>
                     @endif
-                    <button class="btn btn-secondary" onclick="window.location.href='/logout'">
-                        Logout
-                    </button>
+                    <form method="post" action="/logout">
+                        <button class="btn btn-secondary">
+                            Logout
+                        </button>
+                    </form>
                 </div>
             </section>
         </main>
