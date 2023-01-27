@@ -3,8 +3,8 @@ package io.github.raniagus.example;
 import static io.github.raniagus.example.Configuration.getInstanceOf;
 
 import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import io.github.raniagus.example.data.CSVParser;
-import io.github.raniagus.example.data.CSVUser;
+import io.github.raniagus.example.csv.CSVParser;
+import io.github.raniagus.example.csv.CSVUser;
 import io.github.raniagus.example.repository.UserRepository;
 import java.util.stream.Collectors;
 

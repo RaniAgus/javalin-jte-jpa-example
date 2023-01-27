@@ -1,4 +1,4 @@
-package io.github.raniagus.example.data;
+package io.github.raniagus.example.csv;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
