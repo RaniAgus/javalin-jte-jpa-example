@@ -3,11 +3,10 @@ package io.github.raniagus.example;
 import static io.github.raniagus.example.Configuration.getInstanceOf;
 
 import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import io.github.raniagus.example.model.CSVParser;
-import io.github.raniagus.example.model.Role;
-import io.github.raniagus.example.model.User;
+import io.github.raniagus.example.data.CSVParser;
+import io.github.raniagus.example.data.CSVUser;
 import io.github.raniagus.example.repository.UserRepository;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * This class is used to seed the database with some initial data.
@@ -20,13 +19,17 @@ public class Bootstrap implements WithSimplePersistenceUnit {
   }
 
   public void run() {
-    withTransaction(() -> {
-      userRepository.deleteAll();
-      try (var parser = new CSVParser("db/users.csv", ",")) {
-          parser.parse(parts -> new User(parts[1], parts[2], parts[3], parts[4],
-                  Objects.equals(parts[5], "true") ? Role.ADMIN : Role.USER))
-              .forEach(userRepository::save);
-      }
-    });
+    try (var reader = new CSVParser("db/users.csv", ",")) {
+      var users = reader.parse(CSVUser.class)
+          .map(CSVUser::toUser)
+          .collect(Collectors.toList());
+
+      withTransaction(() -> {
+        userRepository.deleteAll();
+        userRepository.saveAll(users);
+      });
+
+      users.forEach(System.out::println);
+    }
   }
 }

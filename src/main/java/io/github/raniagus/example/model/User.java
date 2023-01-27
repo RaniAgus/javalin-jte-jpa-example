@@ -47,4 +47,15 @@ public class User extends PersistableEntity {
   public Role getRole() {
     return role;
   }
+
+  @Override
+  public String toString() {
+    return "User{" +
+        "firstName='" + firstName + '\'' +
+        ", lastName='" + lastName + '\'' +
+        ", email='" + email + '\'' +
+        ", password='" + password + '\'' +
+        ", role=" + role +
+        '}';
+  }
 }

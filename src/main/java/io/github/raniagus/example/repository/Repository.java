@@ -50,11 +50,25 @@ public abstract class Repository<T extends PersistableEntity> implements WithSim
     return Optional.of(entity);
   }
 
+  public List<T> saveAll(List<T> entities) {
+    return entities.stream()
+        .map(this::save)
+        .flatMap(Optional::stream)
+        .collect(Collectors.toList());
+  }
+
   public Optional<T> update(T entity) {
     if (!existsById(entity.getId())) {
       return Optional.empty();
     }
     return Optional.ofNullable(merge(entity));
+  }
+
+  public List<T> updateAll(List<T> entities) {
+    return entities.stream()
+        .map(this::update)
+        .flatMap(Optional::stream)
+        .collect(Collectors.toList());
   }
 
   public boolean delete(T entity) {
