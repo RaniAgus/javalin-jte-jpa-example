@@ -3,20 +3,21 @@ package io.github.raniagus.example.repository;
 import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
 import io.github.raniagus.example.model.PersistableEntity;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import javax.persistence.TypedQuery;
 
 public abstract class Repository<T extends PersistableEntity> implements WithSimplePersistenceUnit {
 
-  public boolean existsById(Long id) {
+  public boolean existsById(UUID id) {
     return getById(id).isPresent();
   }
 
-  public Optional<T> getById(Long id) {
+  public Optional<T> getById(UUID id) {
     if (id == null) {
       return Optional.empty();
     }
@@ -79,7 +80,7 @@ public abstract class Repository<T extends PersistableEntity> implements WithSim
     return true;
   }
 
-  public boolean deleteById(Long id) {
+  public boolean deleteById(UUID id) {
     return getById(id).map(this::delete).orElse(false);
   }
 

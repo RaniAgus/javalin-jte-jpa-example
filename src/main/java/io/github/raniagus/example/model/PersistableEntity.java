@@ -1,20 +1,23 @@
 package io.github.raniagus.example.model;
 
+import java.util.UUID;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import org.hibernate.annotations.GenericGenerator;
 
 @MappedSuperclass
 public abstract class PersistableEntity {
   @Id
-  @GeneratedValue
-  private Long id;
+  @GeneratedValue(generator = "UUID")
+  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+  private UUID id;
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(UUID id) {
     this.id = id;
   }
 }
