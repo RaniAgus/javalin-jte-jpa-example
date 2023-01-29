@@ -5,13 +5,11 @@ title = @`Not Found`,
 styles = @``,
 body = @`
     <body>
-        <main class="container">
-            <section class="row">
-                <div class="col-md-12">
-                    <h1>404</h1>
-                    <p>There's nothing here.</p>
-                    <a href="/">Take me home</a>
-                </div>
+        <main>
+            <section>
+                <h1>404</h1>
+                <p>There's nothing here.</p>
+                <a href="/">Take me home</a>
             </section>
         </main>
     </body>

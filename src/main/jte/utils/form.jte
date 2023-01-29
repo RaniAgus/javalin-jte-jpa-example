@@ -11,13 +11,12 @@
 title = title,
 styles = @`<link rel="stylesheet" href="/css/userForm.css" /> ${styles}`,
 body = @`
-    <body class="body-signin">
-    <main class="container">
-        <form class="form-signin" action="${postUrl}" method="post">
-            <h2 class="form-signin-heading">${title}</h2>
+    <body>
+    <main>
+        <form action="${postUrl}" method="post">
+            <h2>${title}</h2>
             ${children}
-            <button class="btn btn-lg btn-primary btn-block form-action" type="submit">${action}</button>
-
+            <button type="submit">${action}</button>
         </form>
     </main>
     </body>
