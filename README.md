@@ -3,9 +3,12 @@
 ## Dependencias
 
 - SDK: [Java 11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
-- Framework web: [Javalin](https://javalin.io/) (fork de Spark)
+- Framework web: [Javalin](https://javalin.io/): es un fork de SparkJava, ver
+  [comparativa](https://javalin.io/comparisons/sparkjava)
 - Motor de Templates: [JTE](https://jte.gg/)
-- ORM: [flbulgarelli/jpa-extras](https://github.com/flbulgarelli/jpa-extras)
+- ORM: [flbulgarelli/jpa-extras](https://github.com/flbulgarelli/jpa-extras) (con una modificación para soportar
+  variables de entorno en la URL de la base de datos, ver 
+  [Pull Request](https://github.com/flbulgarelli/jpa-extras/pull/2)).
 
 ## Configuración en local
 
@@ -105,4 +108,4 @@ Esta es la opción que más recomiendo actualmente, ya que Fly.io:
   habernos equivocado al configurar una variable de entorno o querer desplegar una versión anterior.
 
 Además, CockroachDB es un servicio específico para bases de datos, por lo que provee muchas más opciones que Railway
-para monitorear y administrar la base de datos. También podrías usarlo junto con Railway.
+para monitorear y administrar la base de datos. También podrías usarlo junto con Railway para desplegar la aplicación.
