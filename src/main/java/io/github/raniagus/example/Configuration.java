@@ -16,8 +16,10 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * This class is used to configure the database connection,
- * the template engine, and the access manager.
+ * Esta clase nos permite configurar la inyección de dependencias.
+ * Además, todas las clases anotadas con @Singleton se crean una sola vez y se reutilizan
+ * cada vez que se las solicite mediante el método getInstanceOf o por constructor mediante
+ * la anotación @Inject.
  */
 public class Configuration extends AbstractModule {
   private static final Injector INJECTOR = Guice.createInjector(new Configuration());

@@ -9,7 +9,7 @@ import io.github.raniagus.example.repository.UserRepository;
 import java.util.stream.Collectors;
 
 /**
- * This class is used to seed the database with some initial data.
+ * Esta clase nos permite insertar datos de prueba en la base de datos.
  */
 public class Bootstrap implements WithSimplePersistenceUnit {
   public static final UserRepository userRepository = getInstanceOf(UserRepository.class);
