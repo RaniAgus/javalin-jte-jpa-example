@@ -19,17 +19,16 @@ public class Bootstrap implements WithSimplePersistenceUnit {
   }
 
   public void run() {
-    try (var reader = new CSVParser("db/users.csv", ",")) {
-      var users = reader.parse(CSVUser.class)
-          .map(CSVUser::toUser)
-          .collect(Collectors.toList());
+    var reader = new CSVParser("db/users.csv", ",");
+    var users = reader.parse(CSVUser.class)
+        .map(CSVUser::toUser)
+        .collect(Collectors.toList());
 
-      withTransaction(() -> {
-        userRepository.deleteAll();
-        userRepository.saveAll(users);
-      });
+    withTransaction(() -> {
+      userRepository.deleteAll();
+      userRepository.saveAll(users);
+    });
 
-      users.forEach(System.out::println);
-    }
+    users.forEach(System.out::println);
   }
 }

@@ -44,9 +44,8 @@ public class Configuration extends AbstractModule {
           .set("hibernate.connection.url", System.getenv("DB_URL"))
           .set("hibernate.connection.username", System.getenv("DB_USERNAME"))
           .set("hibernate.connection.password", System.getenv("DB_PASSWORD")));
-    } else {
-      WithSimplePersistenceUnit.dispose();
     }
+    WithSimplePersistenceUnit.dispose();
   }
 
   private FileRenderer fileRenderer() {
