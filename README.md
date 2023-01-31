@@ -1,58 +1,97 @@
 # javalin-jte-jpa-example
 
-## Dependencias
+Ejemplo de despliegue de una aplicación [Java 11]
+utilizando el siguiente stack:
 
-- SDK: [Java 11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
-- Framework web: [Javalin](https://javalin.io/): es un fork de SparkJava, ver
-  [comparativa](https://javalin.io/comparisons/sparkjava)
-- Motor de Templates: [JTE](https://jte.gg/)
-- ORM: [flbulgarelli/jpa-extras](https://github.com/flbulgarelli/jpa-extras) (con una modificación para soportar
-  variables de entorno en la URL de la base de datos, ver 
-  [Pull Request](https://github.com/flbulgarelli/jpa-extras/pull/2)).
+- [Javalin]: framework web que nació como un fork de Spark, por lo que es parecido a éste (ver
+  [comparativa entre Javalin y Spark]) pero se mantiene constantemente actualizado. 
+
+- [JTE]: motor de templates que utiliza código Java directamente en los templates, similar a lo que uno haría en C# con
+  [Razor]. Permite hard reload de templates sin necesidad de reiniciar la aplicación e incluye un 
+  [plugin para IntelliJ IDEA] con autocompletado y soporte para refactoring.
+
+- [Guice]: framework de inyección de dependencias que permite crear objetos de forma automática y declarativa.
+
+- Un fork de [flbulgarelli/jpa-extras] (wrapper de [JPA] y [Hibernate 5] con fines educativos) que incluye soporte para
+  variables de entorno (ver [Pull Request]).
+
+
+[Java 11]: https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
+[Javalin]: https://javalin.io/
+[comparativa entre Javalin y Spark]: https://javalin.io/comparisons/sparkjava
+[JTE]: https://jte.gg/
+[Razor]: https://learn.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-7.0
+[plugin para IntelliJ IDEA]: https://plugins.jetbrains.com/plugin/13407-jte
+[Guice]: https://github.com/google/guice
+[flbulgarelli/jpa-extras]: https://github.com/flbulgarelli/jpa-extras
+[JPA]: https://en.wikipedia.org/wiki/Java_Persistence_API
+[Hibernate 5]: https://hibernate.org/orm/releases/5.4/
+[Pull Request]: https://github.com/flbulgarelli/jpa-extras/pull/2
 
 ## Configuración en local
 
 ### IntelliJ IDEA
 
+- Configurar el JDK 11:
+  - Ir a `File > Project Structure > Project`
+  - En la sección `Project SDK`, seleccionar `New...` y seleccionar el JDK 11
+  - En la sección `Project language level`, seleccionar `11 - Lambdas, type annotations etc.`
 - Instalar el [JTE plugin](https://plugins.jetbrains.com/plugin/13407-jte)
 
 ### Base de datos
 
-#### Opción 1: PostgreSQL
+#### Paso 1: Instalar PostgreSQL
+
+Para instalar la base de datos, hay dos opciones: instalar PostgreSQL localmente o usar Docker Compose. Yo recomiendo 
+Docker Compose, ya que es más fácil de configurar y no requiere instalar nada en el sistema.
+
+##### Opción 1: PostgreSQL local
 
 - Instalar [PostgreSQL](https://www.postgresql.org/download/)
-- Crear una base de datos llamada `example`
-- Desde IntelliJ, ejecutar la clase `io.github.raniagus.example.Bootstrap` para crear las tablas e insertar datos de
-prueba. Los usuarios de prueba son provistos por un archivo csv generado desde [Mockaroo](https://mockaroo.com/).
+- Crear un usuario llamado `postgres` con contraseña `postgres`.
+- Crear una base de datos llamada `example`.
 
-#### Opción 2: Docker Compose
+En caso de querer usar otro nombre de usuario, contraseña o base de datos, se debe modificar el archivo
+`src/main/resources/META-INF/persistence.xml` con los valores correspondientes.
+
+##### Opción 2: Docker Compose
 
 - Instalar [Docker](https://docs.docker.com/get-docker/) y
   [Docker Compose](https://docs.docker.com/compose/install/)
 - Desde consola,
   - Ejecutar `docker volume create --name=example-data` para crear un volumen para guardar los datos de la base de datos
-  - Ejecutar `docker-compose up -d db` para iniciar la base de datos en segundo plano
-- Desde IntelliJ, ejecutar la clase `io.github.raniagus.example.Bootstrap` para crear las tablas e insertar datos de
-prueba
+  - Ejecutar `docker-compose up db` cada vez que querramos iniciar la base de datos. Podemos apagarla con `Ctrl+C`.
+
+#### Paso 2: Insertar datos
+
+Una vez iniciados PostgreSQL, debemos ejecutar la clase `io.github.raniagus.example.Bootstrap` para crear las tablas e
+insertar datos de prueba leyendo los CSV que se encuentran en `src/main/resources/data/`.
+Estos datos fueron generados con [Mockaroo](https://mockaroo.com/).
 
 ## Ejecutar la aplicación
 
-- Ejecutar desde IntelliJ `io.github.raniagus.example.Application` para iniciar la aplicación
+- Ejecutar desde IntelliJ `io.github.raniagus.example.Application` para iniciar la aplicación.
 
 ## Despliegue
+
+Para desplegar la aplicación, hay tres opciones: Docker Compose, Railway o Fly.io. Para cada una de ellas, se deben
+agregar las variables de entorno necesarias para conectarse a la base de datos:
+- `DB_URL`: La URL a la base de datos, ej.: `jdbc:postgresql://example-db:5432/example`
+- `DB_USERNAME`: El usuario de la base de datos
+- `DB_PASSWORD`: La contraseña de la base de datos
+- `PORT`: El puerto en el que se ejecutará la aplicación, que siempre será el `80`
+
+En local esto no hizo falta, ya que en caso de que no se especifiquen estas variables, se usan los valores por defecto
+que se encuentran en `src/main/resources/META-INF/persistence.xml` (ver clase 
+`io.github.raniagus.example.config.Configuration`).
 
 ### Opción 1: Docker Compose
 
 La primera opción es usar una máquina virtual, como las que provee [Digital Ocean](https://www.digitalocean.com/), para
 desplegar la aplicación completa (incluyendo la base de datos) en un servidor con Docker Compose instalado.
 
-Simplemente, debemos clonar el repositorio, crear un archivo `.env` con las variables de entorno necesarias:
-- `DB_URL`: La URL a la base de datos, ej.: `jdbc:postgresql://example-db:5432/example`
-- `DB_USERNAME`: El usuario de la base de datos
-- `DB_PASSWORD`: La contraseña de la base de datos
-- `PORT`: El puerto en el que se ejecutará la aplicación, que siempre será el `80`
-
-Y ejecutar `docker-compose up -d`
+Simplemente, debemos clonar el repositorio, crear un archivo `.env` con las variables de entorno necesarias y ejecutar
+`docker-compose up -d`
 
 Si bien esta es una opción posible, es recomendable usar una base de datos en un nodo separado como se explica en las
 siguientes opciones.

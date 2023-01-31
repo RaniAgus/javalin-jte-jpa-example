@@ -5,28 +5,26 @@ import static java.lang.System.arraycopy;
 import static java.util.Arrays.fill;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.UncheckedIOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class CSVParser {
-  private File file;
-  private String separator;
-  private ObjectMapper objectMapper;
+public class CSVParser implements AutoCloseable {
+  private final InputStream inputStream;
+  private final String separator;
+  private final ObjectMapper objectMapper;
 
   public CSVParser(String filename, String separator) {
-    this.file = new File(filename);
+    this.inputStream = getClass().getClassLoader().getResourceAsStream(filename);
     this.separator = separator;
     this.objectMapper = new ObjectMapper();
   }
 
   public <T> Stream<T> parse(Class<T> clazz) {
-    try (var scanner = new Scanner(file)) {
+    try (var scanner = new Scanner(inputStream)) {
       var streamBuilder = Stream.<Map<String, String>>builder();
       var header = scanner.nextLine().split(separator);
 
@@ -43,8 +41,11 @@ public class CSVParser {
       }
 
       return streamBuilder.build().map(map -> objectMapper.convertValue(map, clazz));
-    } catch (FileNotFoundException e) {
-      throw new UncheckedIOException(e);
     }
+  }
+
+  @Override
+  public void close() throws Exception {
+    inputStream.close();
   }
 }

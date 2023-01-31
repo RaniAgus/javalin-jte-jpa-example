@@ -1,34 +1,49 @@
 package io.github.raniagus.example;
 
-import static io.github.raniagus.example.Configuration.getInstanceOf;
+import static org.slf4j.LoggerFactory.getILoggerFactory;
 
 import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import io.github.raniagus.example.config.Configuration;
 import io.github.raniagus.example.csv.CSVParser;
 import io.github.raniagus.example.csv.CSVUser;
 import io.github.raniagus.example.repository.UserRepository;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
 
 /**
  * Esta clase nos permite insertar datos de prueba en la base de datos.
  */
-public class Bootstrap implements WithSimplePersistenceUnit {
-  public static final UserRepository userRepository = getInstanceOf(UserRepository.class);
+public class Bootstrap implements Runnable, WithSimplePersistenceUnit {
+  private static final Logger log = getILoggerFactory().getLogger(Bootstrap.class.getCanonicalName());
 
   public static void main(String[] args) {
-    new Bootstrap().run();
+    Guice.createInjector(Configuration.create()).getInstance(Bootstrap.class).run();
   }
 
+  private final UserRepository userRepository;
+
+  @Inject
+  public Bootstrap(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
+
+  @Override
   public void run() {
-    var reader = new CSVParser("db/users.csv", ",");
-    var users = reader.parse(CSVUser.class)
-        .map(CSVUser::toUser)
-        .collect(Collectors.toList());
+    try (var reader = new CSVParser("data/users.csv", ",")) {
+      var users = reader.parse(CSVUser.class)
+          .map(CSVUser::toUser)
+          .collect(Collectors.toList());
 
-    withTransaction(() -> {
-      userRepository.deleteAll();
-      userRepository.saveAll(users);
-    });
+      withTransaction(() -> {
+        userRepository.deleteAll();
+        userRepository.saveAll(users);
+      });
 
-    users.forEach(System.out::println);
+      users.forEach(user -> log.info("Usuario insertado: {}", user));
+    } catch (Exception e) {
+      log.error("Error al insertar datos de prueba", e);
+    }
   }
 }
