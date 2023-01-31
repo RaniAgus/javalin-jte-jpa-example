@@ -3,14 +3,15 @@
 Ejemplo de despliegue de una aplicación [Java 11]
 utilizando el siguiente stack:
 
-- [Javalin]: framework web que nació como un fork de Spark, por lo que es parecido a éste (ver
+- [Javalin]: framework web liviano que nació como un fork de Spark, por lo que es parecido a éste (ver
   [comparativa entre Javalin y Spark]) pero se mantiene constantemente actualizado. 
 
 - [JTE]: motor de templates que utiliza código Java directamente en los templates, similar a lo que uno haría en C# con
   [Razor]. Permite hard reload de templates sin necesidad de reiniciar la aplicación e incluye un 
   [plugin para IntelliJ IDEA] con autocompletado y soporte para refactoring.
 
-- [Guice]: framework de inyección de dependencias que permite crear objetos de forma automática y declarativa.
+- [Guice]: framework liviano de inyección de dependencias, a través de un service locator y anotaciones como `@Inject` y
+  `@Singleton`. Es un punto medio entre resolver la inyección de dependencias a mano y usar frameworks como Spring.
 
 - Un fork de [flbulgarelli/jpa-extras] (wrapper de [JPA] y [Hibernate 5] con fines educativos) que incluye soporte para
   variables de entorno (ver [Pull Request]).
