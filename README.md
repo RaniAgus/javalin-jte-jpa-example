@@ -1,9 +1,8 @@
 # javalin-jte-jpa-example
 
-Ejemplo de despliegue de una aplicación [Java 11]
-utilizando el siguiente stack:
+Ejemplo de despliegue de una aplicación [Java 11] utilizando el siguiente stack:
 
-- [Javalin]: framework web liviano que nació como un fork de Spark, por lo que es parecido a éste (ver
+- [Javalin]: framework web liviano que nació como un fork de Spark, por lo que es parecido a este (ver
   [comparativa entre Javalin y Spark]) pero se mantiene constantemente actualizado. 
 
 - [JTE]: motor de templates que utiliza código Java directamente en los templates, similar a lo que uno haría en C# con
@@ -37,7 +36,8 @@ utilizando el siguiente stack:
   - Ir a `File > Project Structure > Project`
   - En la sección `Project SDK`, seleccionar `New...` y seleccionar el JDK 11
   - En la sección `Project language level`, seleccionar `11 - Lambdas, type annotations etc.`
-- Instalar el [JTE plugin](https://plugins.jetbrains.com/plugin/13407-jte)
+- Instalar los plugins para [JTE](https://plugins.jetbrains.com/plugin/13407-jte) y
+  [Guice](https://plugins.jetbrains.com/plugin/16876-guice)
 
 ### Base de datos
 
@@ -57,11 +57,13 @@ En caso de querer usar otro nombre de usuario, contraseña o base de datos, se d
 
 ##### Opción 2: Docker Compose
 
-- Instalar [Docker](https://docs.docker.com/get-docker/) y
-  [Docker Compose](https://docs.docker.com/compose/install/)
+- Instalar [Docker] y [Docker Compose]
 - Desde consola,
   - Ejecutar `docker volume create --name=example-data` para crear un volumen para guardar los datos de la base de datos
   - Ejecutar `docker-compose up db` cada vez que querramos iniciar la base de datos. Podemos apagarla con `Ctrl+C`.
+
+[Docker]: https://docs.docker.com/get-docker/
+[Docker Compose]: https://docs.docker.com/compose/install/
 
 #### Paso 2: Insertar datos
 
