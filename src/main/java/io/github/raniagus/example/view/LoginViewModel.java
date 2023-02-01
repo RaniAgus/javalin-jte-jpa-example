@@ -1,12 +1,18 @@
 package io.github.raniagus.example.view;
 
 public class LoginViewModel implements ViewModel {
-  private String redirect;
-  private String error;
+  private final String email;
+  private final String redirect;
+  private final String error;
 
-  public LoginViewModel(String redirect, String error) {
+  public LoginViewModel(String email, String redirect, String error) {
+    this.email = email;
     this.redirect = redirect;
     this.error = error;
+  }
+
+  public String getEmail() {
+    return email;
   }
 
   public String getRedirect() {

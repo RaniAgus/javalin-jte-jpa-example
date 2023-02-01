@@ -18,7 +18,7 @@ public class CSVUser {
   @JsonProperty("is_admin")
   private boolean isAdmin;
 
-  public User toUser() {
+  public User toEntity() {
     return new User(
         firstName,
         lastName,

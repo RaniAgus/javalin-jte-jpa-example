@@ -10,13 +10,18 @@ import io.javalin.validation.ValidationException;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import static io.github.raniagus.example.config.Configuration.isDev;
 import static io.javalin.validation.JavalinValidation.collectErrors;
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
 @Singleton
 public class LoginController extends Controller {
-  private UserRepository userRepository;
+  private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+
+  private final UserRepository userRepository;
 
   @Inject
   public LoginController(UserRepository userRepository) {
@@ -24,10 +29,11 @@ public class LoginController extends Controller {
   }
 
   public void renderLogin(Context ctx) {
+    var email = ctx.queryParam("email");
     var redirect = ctx.queryParamAsClass("redirect", String.class).getOrDefault("/");
     var error = ctx.queryParam("error");
 
-    render(ctx, new LoginViewModel(redirect, decode(error)));
+    render(ctx, new LoginViewModel(email, redirect, decode(error)));
   }
 
   public void login(Context ctx) {
@@ -46,7 +52,11 @@ public class LoginController extends Controller {
       ctx.status(HttpStatus.BAD_REQUEST);
       ctx.json(collectErrors(email, password));
     } catch (NotFoundResponse e) {
-      ctx.redirect("/login?" + encode(Map.of("redirect", redirect, "error", e.getMessage())));
+      ctx.redirect("/login?" + encode(Map.of(
+          "email", ctx.formParamAsClass("email", String.class).getOrDefault(""),
+          "redirect", redirect,
+          "error", e.getMessage()
+      )));
     }
   }
 
@@ -57,6 +67,9 @@ public class LoginController extends Controller {
 
   public void notFound(NotFoundResponse e, Context ctx) {
     ctx.status(HttpStatus.NOT_FOUND);
+    if (isDev()) {
+      log.warn("Not found {}", ctx.req().getRequestURI(), e);
+    }
     render(ctx, new NotFoundViewModel());
   }
 }

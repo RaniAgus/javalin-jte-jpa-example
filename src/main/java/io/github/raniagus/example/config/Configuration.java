@@ -22,7 +22,7 @@ public abstract class Configuration extends AbstractModule {
     return isDev() ? new DevConfiguration() : new ProdConfiguration();
   }
 
-  protected static boolean isDev() {
+  public static boolean isDev() {
     var variables = List.of("DB_URL", "DB_USERNAME", "DB_PASSWORD", "PORT");
     var noneVariableExist = variables.stream().map(System::getenv).noneMatch(Objects::nonNull);
     var allVariablesExist = variables.stream().map(System::getenv).allMatch(Objects::nonNull);

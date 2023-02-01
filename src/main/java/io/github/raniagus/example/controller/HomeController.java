@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 
 @Singleton
 public class HomeController extends Controller {
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
 
   @Inject
   public HomeController(UserRepository userRepository) {
@@ -19,12 +19,9 @@ public class HomeController extends Controller {
   }
 
   public void index(Context ctx) {
-    User user = getUser(ctx);
-    render(ctx, new HomeViewModel(user.getFirstName(),user.getRole() == Role.ADMIN));
-  }
-
-  private User getUser(Context ctx) {
-    return userRepository.getById(ctx.sessionAttribute("user"))
+    User user = userRepository.getById(ctx.sessionAttribute("user"))
         .orElseThrow(NotFoundResponse::new);
+
+    render(ctx, new HomeViewModel(user.getFirstName(),user.getRole() == Role.ADMIN));
   }
 }

@@ -8,7 +8,7 @@ postUrl = "/register",
 children = @`
     <label for="first-name">First name</label>
     <input type="text" id="first-name" name="first-name"
-           placeholder="First name" value="${vm.getFirstName()} "required autofocus>
+           placeholder="First name" value="${vm.getFirstName()}" required autofocus>
 
     <label for="last-name">Last name</label>
     <input type="text" id="last-name" name="last-name"
