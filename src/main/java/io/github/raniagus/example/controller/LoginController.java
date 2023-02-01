@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import static io.github.raniagus.example.config.Configuration.isDev;
 import static io.javalin.validation.JavalinValidation.collectErrors;
-import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
 @Singleton
 public class LoginController extends Controller {
@@ -43,7 +42,7 @@ public class LoginController extends Controller {
 
     try {
       var user = userRepository.getByEmail(email.get())
-          .filter(u -> u.getPassword().equals(sha256Hex(password.get())))
+          .filter(u -> u.hasPassword(password.get()))
           .orElseThrow(() -> new NotFoundResponse("Invalid email or password"));
 
       ctx.sessionAttribute("user", user.getId());

@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
@@ -13,6 +14,7 @@ public class User extends PersistableEntity {
   private String firstName;
   private String lastName;
   private String email;
+  private String passwordSalt;
   private String password;
   @Enumerated(EnumType.STRING)
   private Role role;
@@ -24,7 +26,8 @@ public class User extends PersistableEntity {
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
-    this.password = sha256Hex(password);
+    this.passwordSalt = RandomStringUtils.random(16);
+    this.password = getHashedPassword(password, this.passwordSalt);
     this.role = role;
   }
 
@@ -40,12 +43,16 @@ public class User extends PersistableEntity {
     return email;
   }
 
-  public String getPassword() {
-    return password;
+  public boolean hasPassword(String password) {
+    return this.password.equals(getHashedPassword(password, this.passwordSalt));
   }
 
   public Role getRole() {
     return role;
+  }
+
+  private static String getHashedPassword(String password, String salt) {
+    return sha256Hex(salt + sha256Hex(password));
   }
 
   @Override
@@ -54,6 +61,7 @@ public class User extends PersistableEntity {
         "firstName='" + firstName + '\'' +
         ", lastName='" + lastName + '\'' +
         ", email='" + email + '\'' +
+        ", passwordSalt='" + passwordSalt + '\'' +
         ", password='" + password + '\'' +
         ", role=" + role +
         '}';
