@@ -1,9 +1,8 @@
 package io.github.raniagus.example;
 
 import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import io.github.raniagus.example.config.Configuration;
+import io.github.raniagus.example.config.InjectorHolder;
 import io.github.raniagus.example.controller.LoginController;
 import io.github.raniagus.example.csv.CSVParser;
 import io.github.raniagus.example.csv.CSVUser;
@@ -19,7 +18,7 @@ public class Bootstrap implements Runnable, WithSimplePersistenceUnit {
   private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
   public static void main(String[] args) {
-    Guice.createInjector(Configuration.create()).getInstance(Bootstrap.class).run();
+    InjectorHolder.getInstance(Bootstrap.class).run();
   }
 
   private final UserRepository userRepository;

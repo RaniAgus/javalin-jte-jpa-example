@@ -1,9 +1,8 @@
 package io.github.raniagus.example;
 
 import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import io.github.raniagus.example.config.Configuration;
+import io.github.raniagus.example.config.InjectorHolder;
 import io.github.raniagus.example.controller.HomeController;
 import io.github.raniagus.example.controller.LoginController;
 import io.github.raniagus.example.controller.RegisterController;
@@ -20,7 +19,7 @@ import javax.inject.Named;
 
 public class Application implements Runnable {
   public static void main(String[] args) {
-    Guice.createInjector(Configuration.create()).getInstance(Application.class).run();
+    InjectorHolder.getInstance(Application.class).run();
   }
 
   private final AccessManager accessManager;
