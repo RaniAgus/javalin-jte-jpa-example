@@ -24,7 +24,8 @@ public abstract class Repository<T extends PersistableEntity> implements WithSim
     return Optional.ofNullable(find(getEntityClass(), id));
   }
 
-  public Optional<T> getBy(Map.Entry<String, Object>... entries) {
+  @SafeVarargs
+  public final Optional<T> getBy(Map.Entry<String, Object>... entries) {
     return findBy(entries).stream().findFirst();
   }
 
@@ -33,7 +34,8 @@ public abstract class Repository<T extends PersistableEntity> implements WithSim
         .getResultList();
   }
 
-  public List<T> findBy(Map.Entry<String, Object>... entries) {
+  @SafeVarargs
+  public final List<T> findBy(Map.Entry<String, Object>... entries) {
     Map<String, Object> params = Map.ofEntries(entries);
     TypedQuery<T> query = createQuery(
         "from " + getEntityClass().getSimpleName()
