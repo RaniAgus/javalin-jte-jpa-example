@@ -14,7 +14,7 @@ public enum InjectorHolder {
 
   private final Injector injector = Guice.createInjector(Configuration.create());
 
-  public static <T> T getInstance(Class<T> clazz) {
-    return INSTANCE.injector.getInstance(clazz);
+  public static Injector getInjector() {
+    return INSTANCE.injector;
   }
 }

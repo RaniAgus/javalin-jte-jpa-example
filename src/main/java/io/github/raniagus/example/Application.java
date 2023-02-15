@@ -19,7 +19,7 @@ import javax.inject.Named;
 
 public class Application implements Runnable {
   public static void main(String[] args) {
-    InjectorHolder.getInstance(Application.class).run();
+    InjectorHolder.getInjector().getInstance(Application.class).run();
   }
 
   private final AccessManager accessManager;

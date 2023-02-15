@@ -18,7 +18,7 @@ public class Bootstrap implements Runnable, WithSimplePersistenceUnit {
   private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
   public static void main(String[] args) {
-    InjectorHolder.getInstance(Bootstrap.class).run();
+    InjectorHolder.getInjector().getInstance(Bootstrap.class).run();
   }
 
   private final UserRepository userRepository;
