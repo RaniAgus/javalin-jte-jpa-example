@@ -12,9 +12,7 @@ Ejemplo de despliegue de una aplicación [Java 11] utilizando el siguiente stack
 - [Guice]: framework liviano de inyección de dependencias, a través de un service locator y anotaciones como `@Inject` y
   `@Singleton`. Es un punto medio entre resolver la inyección de dependencias a mano y usar frameworks como Spring.
 
-- Un fork de [flbulgarelli/jpa-extras] (wrapper de [JPA] y [Hibernate 5] con fines educativos) que incluye soporte para
-  variables de entorno (ver [Pull Request]).
-
+- [flbulgarelli/jpa-extras]: wrapper de [JPA] y [Hibernate 5] con fines educativos.
 
 [Java 11]: https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
 [Javalin]: https://javalin.io/

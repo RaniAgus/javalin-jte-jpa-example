@@ -61,9 +61,9 @@
             <version>${jte.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.raniagus</groupId>
-            <artifactId>jpa-java8-extras</artifactId>
-            <version>jdk11-alpha.3</version>
+            <groupId>com.github.flbulgarelli</groupId>
+            <artifactId>jpa-extras</artifactId>
+            <version>45cfec6ee2</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
