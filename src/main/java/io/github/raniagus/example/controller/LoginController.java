@@ -41,7 +41,7 @@ public class LoginController extends Controller {
     var redirect = ctx.formParamAsClass("redirect", String.class).getOrDefault("/");
 
     try {
-      var user = userRepository.getByEmail(email.get())
+      var user = userRepository.findByEmail(email.get())
           .filter(u -> u.hasPassword(password.get()))
           .orElseThrow(() -> new NotFoundResponse("Invalid email or password"));
 

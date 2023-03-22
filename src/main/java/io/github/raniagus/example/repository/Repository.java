@@ -14,35 +14,19 @@ import javax.persistence.TypedQuery;
 public abstract class Repository<T extends PersistableEntity> implements WithSimplePersistenceUnit {
 
   public boolean existsById(UUID id) {
-    return getById(id).isPresent();
+    return findById(id).isPresent();
   }
 
-  public Optional<T> getById(UUID id) {
+  public Optional<T> findById(UUID id) {
     if (id == null) {
       return Optional.empty();
     }
     return Optional.ofNullable(find(getEntityClass(), id));
   }
 
-  @SafeVarargs
-  public final Optional<T> getBy(Map.Entry<String, Object>... entries) {
-    return findBy(entries).stream().findFirst();
-  }
-
   public List<T> findAll() {
     return createQuery("from " + getEntityClass().getSimpleName(), getEntityClass())
         .getResultList();
-  }
-
-  @SafeVarargs
-  public final List<T> findBy(Map.Entry<String, Object>... entries) {
-    Map<String, Object> params = Map.ofEntries(entries);
-    TypedQuery<T> query = createQuery(
-        "from " + getEntityClass().getSimpleName()
-            + " where " + getWhereClause(params.keySet()),
-        getEntityClass());
-    params.forEach(query::setParameter);
-    return query.getResultList();
   }
 
   public Optional<T> save(T entity) {
@@ -83,7 +67,7 @@ public abstract class Repository<T extends PersistableEntity> implements WithSim
   }
 
   public boolean deleteById(UUID id) {
-    return getById(id).map(this::delete).orElse(false);
+    return findById(id).map(this::delete).orElse(false);
   }
 
   public void deleteAll() {
@@ -93,6 +77,22 @@ public abstract class Repository<T extends PersistableEntity> implements WithSim
   public long count() {
     return createQuery("select count(*) from " + getEntityClass().getSimpleName(), Long.class)
         .getSingleResult();
+  }
+
+  @SafeVarargs
+  protected final Optional<T> findBy(Map.Entry<String, Object>... entries) {
+    return findAllBy(entries).stream().findAny();
+  }
+
+  @SafeVarargs
+  protected final List<T> findAllBy(Map.Entry<String, Object>... entries) {
+    Map<String, Object> params = Map.ofEntries(entries);
+    TypedQuery<T> query = createQuery(
+        "from " + getEntityClass().getSimpleName()
+            + " where " + getWhereClause(params.keySet()),
+        getEntityClass());
+    params.forEach(query::setParameter);
+    return query.getResultList();
   }
 
   private String getWhereClause(Set<String> params) {

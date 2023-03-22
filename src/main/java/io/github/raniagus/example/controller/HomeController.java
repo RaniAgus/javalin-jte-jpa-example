@@ -19,7 +19,7 @@ public class HomeController extends Controller {
   }
 
   public void index(Context ctx) {
-    User user = userRepository.getById(ctx.sessionAttribute("user"))
+    User user = userRepository.findById(ctx.sessionAttribute("user"))
         .orElseThrow(NotFoundResponse::new);
 
     render(ctx, new HomeViewModel(user.getFirstName(),user.getRole() == Role.ADMIN));

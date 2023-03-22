@@ -19,7 +19,7 @@ import javax.inject.Singleton;
 
 @Singleton
 public class RegisterController extends Controller {
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
 
   @Inject
   public RegisterController(UserRepository userRepository) {
@@ -42,7 +42,7 @@ public class RegisterController extends Controller {
     var firstName = ctx.formParamAsClass("first-name", String.class);
     var lastName = ctx.formParamAsClass("last-name", String.class);
     var email = ctx.formParamAsClass("email", String.class)
-        .check(e -> userRepository.getByEmail(e).isEmpty(), "Email already exists");
+        .check(e -> userRepository.findByEmail(e).isEmpty(), "Email already exists");
     var password = ctx.formParamAsClass("password", String.class)
         .check(p -> p.equals(ctx.formParam("confirm-password")), "Passwords do not match");
 

@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Singleton
 public class UserAccessManager implements AccessManager {
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
 
   @Inject
   public UserAccessManager(UserRepository userRepository) {
@@ -26,7 +26,7 @@ public class UserAccessManager implements AccessManager {
   public void manage(@NotNull Handler handler,
                      @NotNull Context context,
                      @NotNull Set<? extends RouteRole> set) throws Exception {
-    var user = userRepository.getById(context.sessionAttribute("user"));
+    var user = userRepository.findById(context.sessionAttribute("user"));
     if (set.contains(Role.ANYONE) || user.map(User::getRole)
                                          .map(set::contains)
                                          .orElse(false)) {

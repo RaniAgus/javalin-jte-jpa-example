@@ -12,7 +12,7 @@ public class UserRepository extends Repository<User> {
     return User.class;
   }
 
-  public Optional<User> getByEmail(String username) {
-    return getBy(entry("email", username));
+  public Optional<User> findByEmail(String email) {
+    return findBy(entry("email", email));
   }
 }
