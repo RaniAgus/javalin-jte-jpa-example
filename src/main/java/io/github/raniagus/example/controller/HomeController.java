@@ -1,5 +1,7 @@
 package io.github.raniagus.example.controller;
 
+import static io.github.raniagus.example.enumeration.UserConstants.USER;
+
 import io.github.raniagus.example.model.Role;
 import io.github.raniagus.example.model.User;
 import io.github.raniagus.example.repository.UserRepository;
@@ -19,7 +21,7 @@ public class HomeController extends Controller {
   }
 
   public void index(Context ctx) {
-    User user = userRepository.findById(ctx.sessionAttribute("user"))
+    User user = userRepository.findById(ctx.sessionAttribute(USER.getValue()))
         .orElseThrow(NotFoundResponse::new);
 
     render(ctx, new HomeViewModel(user.getFirstName(),user.getRole() == Role.ADMIN));

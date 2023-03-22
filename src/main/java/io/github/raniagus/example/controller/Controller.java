@@ -1,11 +1,13 @@
 package io.github.raniagus.example.controller;
 
 import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+import com.google.common.base.Splitter;
 import io.github.raniagus.example.view.ViewModel;
 import io.javalin.http.Context;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -26,5 +28,9 @@ public abstract class Controller implements WithSimplePersistenceUnit {
     return params.entrySet().stream()
         .map(e -> encode(e.getKey()) + "=" + encode(e.getValue()))
         .collect(Collectors.joining("&"));
+  }
+
+  protected List<String> split(String string, String separator) {
+    return Splitter.on(separator).omitEmptyStrings().splitToList(string);
   }
 }

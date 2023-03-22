@@ -14,6 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static io.github.raniagus.example.config.Configuration.isDev;
+import static io.github.raniagus.example.enumeration.ControllerConstants.ERROR;
+import static io.github.raniagus.example.enumeration.ControllerConstants.REDIRECT;
+import static io.github.raniagus.example.enumeration.UserConstants.EMAIL;
+import static io.github.raniagus.example.enumeration.UserConstants.PASSWORD;
+import static io.github.raniagus.example.enumeration.UserConstants.USER;
 import static io.javalin.validation.JavalinValidation.collectErrors;
 
 @Singleton
@@ -28,39 +33,39 @@ public class LoginController extends Controller {
   }
 
   public void renderLogin(Context ctx) {
-    var email = ctx.queryParam("email");
-    var redirect = ctx.queryParamAsClass("redirect", String.class).getOrDefault("/");
-    var error = ctx.queryParam("error");
+    var email = ctx.queryParam(EMAIL.getValue());
+    var redirect = ctx.queryParamAsClass(REDIRECT.getValue(), String.class).getOrDefault("/");
+    var error = ctx.queryParam(ERROR.getValue());
 
     render(ctx, new LoginViewModel(email, redirect, decode(error)));
   }
 
   public void login(Context ctx) {
-    var email = ctx.formParamAsClass("email", String.class);
-    var password = ctx.formParamAsClass("password", String.class);
-    var redirect = ctx.formParamAsClass("redirect", String.class).getOrDefault("/");
+    var email = ctx.formParamAsClass(EMAIL.getValue(), String.class);
+    var password = ctx.formParamAsClass(PASSWORD.getValue(), String.class);
+    var redirect = ctx.formParamAsClass(REDIRECT.getValue(), String.class).getOrDefault("/");
 
     try {
       var user = userRepository.findByEmail(email.get())
           .filter(u -> u.hasPassword(password.get()))
           .orElseThrow(() -> new NotFoundResponse("Invalid email or password"));
 
-      ctx.sessionAttribute("user", user.getId());
+      ctx.sessionAttribute(USER.getValue(), user.getId());
       ctx.redirect(redirect);
     } catch (ValidationException e) {
       ctx.status(HttpStatus.BAD_REQUEST);
       ctx.json(collectErrors(email, password));
     } catch (NotFoundResponse e) {
       ctx.redirect("/login?" + encode(Map.of(
-          "email", ctx.formParamAsClass("email", String.class).getOrDefault(""),
-          "redirect", redirect,
-          "error", e.getMessage()
+          EMAIL.getValue(), ctx.formParamAsClass(EMAIL.getValue(), String.class).getOrDefault(""),
+          REDIRECT.getValue(), redirect,
+          ERROR.getValue(), e.getMessage()
       )));
     }
   }
 
   public void logout(Context ctx) {
-    ctx.consumeSessionAttribute("user");
+    ctx.consumeSessionAttribute(USER.getValue());
     ctx.redirect("/login");
   }
 
