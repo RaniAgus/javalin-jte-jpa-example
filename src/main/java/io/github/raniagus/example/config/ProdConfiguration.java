@@ -1,8 +1,8 @@
 package io.github.raniagus.example.config;
 
-import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.nio.file.Path;
 import java.util.Optional;
 

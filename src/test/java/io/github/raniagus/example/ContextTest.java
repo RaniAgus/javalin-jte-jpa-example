@@ -1,29 +1,27 @@
 package io.github.raniagus.example;
 
-import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import com.github.flbulgarelli.jpa.extras.test.PersistenceTest;
+import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;
 import io.github.raniagus.example.model.Role;
 import io.github.raniagus.example.model.User;
 import org.junit.jupiter.api.Test;
 
-import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-public class ContextTest implements PersistenceTest, WithSimplePersistenceUnit {
+class ContextTest implements SimplePersistenceTest {
 
   @Test
-  public void contextUp() {
+  void contextUp() {
     assertThat(entityManager()).isNotNull();
   }
 
   @Test
-  public void contextUpWithTransaction() {
+  void contextUpWithTransaction() {
     assertDoesNotThrow(() -> withTransaction(() -> {}));
   }
 
   @Test
-  public void userShouldBePersisted() {
+  void userShouldBePersisted() {
     assertDoesNotThrow(() -> withTransaction(this::persistUser));
   }
 
@@ -36,12 +34,11 @@ public class ContextTest implements PersistenceTest, WithSimplePersistenceUnit {
       assertThat(user.getFirstName()).isEqualTo("Agustin");
       assertThat(user.getLastName()).isEqualTo("Ranieri");
       assertThat(user.getEmail()).isEqualTo("raniagus@github.com");
-      assertThat(user.getPassword()).isEqualTo(sha256Hex("password"));
+      assertThat(user.hasPassword("password")).isTrue();
       assertThat(user.getRole()).isEqualTo(Role.USER);
     });
   }
 
-  @Test
   private void persistUser() {
     var user = new User("Agustin", "Ranieri", "raniagus@github.com", "password", Role.USER);
     entityManager().persist(user);

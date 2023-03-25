@@ -9,8 +9,8 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
 
-        <javalin.version>5.3.2</javalin.version>
-        <jte.version>2.2.4</jte.version>
+        <javalin.version>5.4.2</javalin.version>
+        <jte.version>2.3.0</jte.version>
     </properties>
 
     <groupId>io.github.raniagus</groupId>
@@ -19,8 +19,11 @@
 
     <repositories>
         <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
+            <id>sonatype-snapshots</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
@@ -61,14 +64,14 @@
             <version>${jte.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.flbulgarelli</groupId>
+            <groupId>io.github.flbulgarelli</groupId>
             <artifactId>jpa-extras</artifactId>
-            <version>45cfec6ee2</version>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.5.1</version>
+            <version>42.5.4</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.logging</groupId>
@@ -79,13 +82,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.9.0</version>
+            <version>5.9.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.23.1</version>
+            <version>3.24.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>

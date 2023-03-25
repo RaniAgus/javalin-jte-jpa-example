@@ -1,7 +1,7 @@
 package io.github.raniagus.example.controller;
 
-import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import com.google.common.base.Splitter;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import io.github.raniagus.example.view.ViewModel;
 import io.javalin.http.Context;
 import java.net.URLDecoder;

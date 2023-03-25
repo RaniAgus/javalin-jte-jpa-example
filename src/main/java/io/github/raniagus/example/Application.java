@@ -1,7 +1,7 @@
 package io.github.raniagus.example;
 
-import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import com.google.inject.Inject;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import io.github.raniagus.example.config.InjectorHolder;
 import io.github.raniagus.example.controller.HomeController;
 import io.github.raniagus.example.controller.LoginController;
@@ -45,6 +45,7 @@ public class Application implements Runnable {
   }
 
   @Override
+  @SuppressWarnings("java:S2095")
   public void run() {
     JavalinValidation.register(LocalDate.class, LocalDate::parse);
     JavalinRenderer.register(fileRenderer, ".jte");

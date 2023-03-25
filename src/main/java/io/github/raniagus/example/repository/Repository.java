@@ -1,7 +1,6 @@
 package io.github.raniagus.example.repository;
 
-import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import io.github.raniagus.example.model.PersistableEntity;
 import java.util.List;
 import java.util.Map;
