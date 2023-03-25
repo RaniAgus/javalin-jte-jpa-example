@@ -5,17 +5,18 @@ import gg.jte.TemplateEngine;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.nio.file.Path;
 
-public class ProdConfiguration extends Configuration {
-  protected ProdConfiguration() {
+public class ProductionConfiguration extends Configuration {
+
+  protected ProductionConfiguration() {
     super();
   }
 
   @Override
   protected void connectToSimplePersistenceUnit() {
     WithSimplePersistenceUnit.configure(properties -> properties
-        .set("hibernate.connection.url", getEnv("DB_URL").orElseThrow())
-        .set("hibernate.connection.username", getEnv("DB_USERNAME").orElseThrow())
-        .set("hibernate.connection.password", getEnv("DB_PASSWORD").orElseThrow())
+        .set("hibernate.connection.url", getRequiredEnv("DB_URL"))
+        .set("hibernate.connection.username", getRequiredEnv("DB_USERNAME"))
+        .set("hibernate.connection.password", getRequiredEnv("DB_PASSWORD"))
         .set("hibernate.hbm2ddl.auto", "validate"));
   }
 
@@ -26,6 +27,6 @@ public class ProdConfiguration extends Configuration {
 
   @Override
   protected Integer port() {
-    return getEnv("PORT").map(Integer::parseInt).orElseThrow();
+    return Integer.parseInt(getRequiredEnv("PORT"));
   }
 }

@@ -6,8 +6,9 @@ import gg.jte.resolve.DirectoryCodeResolver;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.nio.file.Path;
 
-public class DevConfiguration extends Configuration {
-  protected DevConfiguration() {
+public class DevelopmentConfiguration extends Configuration {
+
+  protected DevelopmentConfiguration() {
     super();
   }
 

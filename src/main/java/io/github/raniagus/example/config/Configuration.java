@@ -7,7 +7,6 @@ import io.github.raniagus.example.access.UserAccessManager;
 import io.javalin.rendering.FileRenderer;
 import io.javalin.rendering.template.JavalinJte;
 import io.javalin.security.AccessManager;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,25 +18,19 @@ public abstract class Configuration extends AbstractModule {
    * desarrollando la aplicación en local o desplegándola en producción.
    */
   public static Configuration create() {
-    return isDev() ? new DevConfiguration() : new ProdConfiguration();
+    return isProduction() ? new ProductionConfiguration() : new DevelopmentConfiguration();
   }
 
-  public static Optional<String> getEnv(String name) {
-    return Optional.ofNullable(System.getenv(name));
+  public static boolean isProduction() {
+    return getOptionalEnv("PRODUCTION").map(Boolean::parseBoolean).orElse(false);
   }
 
-  public static boolean isDev() {
-    var variables = List.of("DB_URL", "DB_USERNAME", "DB_PASSWORD", "PORT");
-    var noneVariableExist = variables.stream().map(Configuration::getEnv).allMatch(Optional::isEmpty);
-    var allVariablesExist = variables.stream().map(Configuration::getEnv).allMatch(Optional::isPresent);
+  protected static Optional<String> getOptionalEnv(String key) {
+    return Optional.ofNullable(System.getenv(key));
+  }
 
-    // Si existen algunas variables de entorno, pero no todas, hay que revisar la configuración.
-    if (!noneVariableExist && !allVariablesExist) {
-      throw new IllegalStateException("Missing environment variables: "
-          + String.join(", ", variables.stream().filter(v -> getEnv(v).isEmpty()).toList()));
-    }
-
-    return noneVariableExist;
+  protected static String getRequiredEnv(String key) {
+    return getOptionalEnv(key).orElseThrow(() -> new IllegalStateException("Missing environment variable: " + key));
   }
 
   /**
@@ -49,7 +42,7 @@ public abstract class Configuration extends AbstractModule {
   @Override
   protected void configure() {
     bind(AccessManager.class).to(UserAccessManager.class);
-    bind(FileRenderer.class).toInstance(new JavalinJte(templateEngine(), ctx -> isDev()));
+    bind(FileRenderer.class).toInstance(new JavalinJte(templateEngine(), ctx -> !isProduction()));
     bind(Integer.class).annotatedWith(Names.named("PORT")).toInstance(port());
     connectToSimplePersistenceUnit();
   }

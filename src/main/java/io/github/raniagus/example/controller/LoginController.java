@@ -13,7 +13,7 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static io.github.raniagus.example.config.Configuration.isDev;
+import static io.github.raniagus.example.config.Configuration.isProduction;
 import static io.github.raniagus.example.enumeration.ControllerConstants.ERROR;
 import static io.github.raniagus.example.enumeration.ControllerConstants.REDIRECT;
 import static io.github.raniagus.example.enumeration.UserConstants.EMAIL;
@@ -71,7 +71,7 @@ public class LoginController extends Controller {
 
   public void notFound(NotFoundResponse e, Context ctx) {
     ctx.status(HttpStatus.NOT_FOUND);
-    if (isDev()) {
+    if (!isProduction()) {
       log.warn("Not found {}", ctx.req().getRequestURI(), e);
     }
     render(ctx, new NotFoundViewModel());
