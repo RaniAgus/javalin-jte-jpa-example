@@ -1,4 +1,4 @@
-FROM maven:3.6.3-jdk-11-slim AS builder
+FROM maven:3.8.5-openjdk-17-slim AS builder
 
 WORKDIR /app
 
@@ -10,9 +10,10 @@ COPY src ./src
 
 RUN mvn package
 
+
 FROM alpine:3.16 as web
 
-RUN apk --no-cache add openjdk11
+RUN apk --no-cache add openjdk17
 
 WORKDIR /app
 

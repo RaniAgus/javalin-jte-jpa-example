@@ -8,7 +8,7 @@ import io.javalin.rendering.FileRenderer;
 import io.javalin.rendering.template.JavalinJte;
 import io.javalin.security.AccessManager;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Esta clase nos permite configurar la inyección de dependencias de Guice desde el método configure().
@@ -22,14 +22,19 @@ public abstract class Configuration extends AbstractModule {
     return isDev() ? new DevConfiguration() : new ProdConfiguration();
   }
 
+  public static Optional<String> getEnv(String name) {
+    return Optional.ofNullable(System.getenv(name));
+  }
+
   public static boolean isDev() {
     var variables = List.of("DB_URL", "DB_USERNAME", "DB_PASSWORD", "PORT");
-    var noneVariableExist = variables.stream().map(System::getenv).noneMatch(Objects::nonNull);
-    var allVariablesExist = variables.stream().map(System::getenv).allMatch(Objects::nonNull);
+    var noneVariableExist = variables.stream().map(Configuration::getEnv).allMatch(Optional::isEmpty);
+    var allVariablesExist = variables.stream().map(Configuration::getEnv).allMatch(Optional::isPresent);
 
     // Si existen algunas variables de entorno, pero no todas, hay que revisar la configuración.
     if (!noneVariableExist && !allVariablesExist) {
-      throw new IllegalStateException("Missing environment variables: " + String.join(", ", variables));
+      throw new IllegalStateException("Missing environment variables: "
+          + String.join(", ", variables.stream().filter(v -> getEnv(v).isEmpty()).toList()));
     }
 
     return noneVariableExist;
@@ -44,7 +49,7 @@ public abstract class Configuration extends AbstractModule {
   @Override
   protected void configure() {
     bind(AccessManager.class).to(UserAccessManager.class);
-    bind(FileRenderer.class).toInstance(new JavalinJte(templateEngine(), (ctx) -> isDev()));
+    bind(FileRenderer.class).toInstance(new JavalinJte(templateEngine(), ctx -> isDev()));
     bind(Integer.class).annotatedWith(Names.named("PORT")).toInstance(port());
     connectToSimplePersistenceUnit();
   }
