@@ -40,7 +40,7 @@ public abstract class Repository<T extends PersistableEntity> implements WithSim
     return entities.stream()
         .map(this::save)
         .flatMap(Optional::stream)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public Optional<T> update(T entity) {
@@ -54,7 +54,7 @@ public abstract class Repository<T extends PersistableEntity> implements WithSim
     return entities.stream()
         .map(this::update)
         .flatMap(Optional::stream)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public boolean delete(T entity) {

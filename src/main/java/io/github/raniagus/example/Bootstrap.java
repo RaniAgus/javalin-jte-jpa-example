@@ -6,7 +6,6 @@ import io.github.raniagus.example.config.InjectorHolder;
 import io.github.raniagus.example.csv.CSVParser;
 import io.github.raniagus.example.csv.CSVUser;
 import io.github.raniagus.example.repository.UserRepository;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +31,7 @@ public class Bootstrap implements Runnable, WithSimplePersistenceUnit {
     try (var reader = new CSVParser("data/users.csv", ",")) {
       var users = reader.parse(CSVUser.class)
           .map(CSVUser::toEntity)
-          .collect(Collectors.toList());
+          .toList();
 
       withTransaction(() -> {
         userRepository.deleteAll();
