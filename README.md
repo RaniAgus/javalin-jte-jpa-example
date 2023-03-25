@@ -1,20 +1,22 @@
 # javalin-jte-jpa-example
 
-Ejemplo de despliegue de una aplicación [Java 11] utilizando el siguiente stack:
+Ejemplo de despliegue de una aplicación [Java 17] utilizando el siguiente stack:
 
 - [Javalin]: framework web liviano que nació como un fork de Spark, por lo que es parecido a este (ver
   [comparativa entre Javalin y Spark]) pero se mantiene constantemente actualizado. 
 
-- [JTE]: motor de templates que utiliza código Java directamente en los templates, similar a lo que uno haría en C# con
-  [Razor]. Permite hard reload de templates sin necesidad de reiniciar la aplicación e incluye un 
+- [JTE]: motor de templates que utiliza código Java directamente en los templates (similar a lo que uno haría en C# con
+  [Razor]). Permite hard reload de templates sin necesidad de reiniciar la aplicación e incluye un 
   [plugin para IntelliJ IDEA] con autocompletado y soporte para refactoring.
 
 - [Guice]: framework liviano de inyección de dependencias, a través de un service locator y anotaciones como `@Inject` y
   `@Singleton`. Es un punto medio entre resolver la inyección de dependencias a mano y usar frameworks como Spring.
 
-- [flbulgarelli/jpa-extras]: wrapper de [JPA] y [Hibernate 5] con fines educativos.
+- [flbulgarelli/jpa-extras]: wrapper de [JPA] y [Hibernate 5] con fines educativos. Incluye mixines para inyectar
+  una instancia de `EntityManager` por hilo y simplifica la configuración de unidades de persistencia permitiendo 
+  utilizar variables de entorno y archivos de configuración.
 
-[Java 11]: https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
+[Java 17]: https://www.oracle.com/java/technologies/downloads/#java17
 [Javalin]: https://javalin.io/
 [comparativa entre Javalin y Spark]: https://javalin.io/comparisons/sparkjava
 [JTE]: https://jte.gg/
@@ -24,16 +26,15 @@ Ejemplo de despliegue de una aplicación [Java 11] utilizando el siguiente stack
 [flbulgarelli/jpa-extras]: https://github.com/flbulgarelli/jpa-extras
 [JPA]: https://en.wikipedia.org/wiki/Java_Persistence_API
 [Hibernate 5]: https://hibernate.org/orm/releases/5.4/
-[Pull Request]: https://github.com/flbulgarelli/jpa-extras/pull/2
 
 ## Configuración en local
 
 ### IntelliJ IDEA
 
-- Configurar el JDK 11:
+- Configurar el JDK 17:
   - Ir a `File > Project Structure > Project`
-  - En la sección `Project SDK`, seleccionar `New...` y seleccionar el JDK 11
-  - En la sección `Project language level`, seleccionar `11 - Lambdas, type annotations etc.`
+  - En la sección `Project SDK`, seleccionar `New...` y seleccionar el JDK 17
+  - En la sección `Project language level`, seleccionar `17 - Sealed types, always-strict floating-point semantics`
 - Instalar los plugins para [JTE](https://plugins.jetbrains.com/plugin/13407-jte) y
   [Guice](https://plugins.jetbrains.com/plugin/16876-guice)
 
