@@ -34,7 +34,7 @@ public class Bootstrap implements Runnable, WithSimplePersistenceUnit {
           .toList();
 
       withTransaction(() -> {
-        userRepository.deleteAll();
+        userRepository.removeAll();
         userRepository.saveAll(users);
       });
 

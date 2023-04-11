@@ -11,16 +11,12 @@ import java.util.stream.Collectors;
 import javax.persistence.TypedQuery;
 
 public abstract class Repository<T extends PersistableEntity> implements WithSimplePersistenceUnit {
-
   public boolean existsById(UUID id) {
     return findById(id).isPresent();
   }
 
   public Optional<T> findById(UUID id) {
-    if (id == null) {
-      return Optional.empty();
-    }
-    return Optional.ofNullable(find(getEntityClass(), id));
+    return Optional.ofNullable(id).map(uuid -> find(getEntityClass(), uuid));
   }
 
   public List<T> findAll() {
@@ -29,11 +25,12 @@ public abstract class Repository<T extends PersistableEntity> implements WithSim
   }
 
   public Optional<T> save(T entity) {
-    if (existsById(entity.getId())) {
-      return Optional.empty();
-    }
-    persist(entity);
-    return Optional.of(entity);
+    return Optional.of(entity)
+        .filter(e -> !existsById(e.getId()))
+        .map(e -> {
+          persist(e);
+          return e;
+        });
   }
 
   public List<T> saveAll(List<T> entities) {
@@ -44,10 +41,9 @@ public abstract class Repository<T extends PersistableEntity> implements WithSim
   }
 
   public Optional<T> update(T entity) {
-    if (!existsById(entity.getId())) {
-      return Optional.empty();
-    }
-    return Optional.ofNullable(merge(entity));
+    return Optional.of(entity)
+        .filter(e -> existsById(e.getId()))
+        .map(this::merge);
   }
 
   public List<T> updateAll(List<T> entities) {
@@ -57,19 +53,11 @@ public abstract class Repository<T extends PersistableEntity> implements WithSim
         .toList();
   }
 
-  public boolean delete(T entity) {
-    if (!existsById(entity.getId())) {
-      return false;
-    }
-    remove(entity);
-    return true;
+  public void removeById(UUID id) {
+    findById(id).ifPresent(this::remove);
   }
 
-  public boolean deleteById(UUID id) {
-    return findById(id).map(this::delete).orElse(false);
-  }
-
-  public void deleteAll() {
+  public void removeAll() {
     findAll().forEach(this::remove);
   }
 
@@ -90,7 +78,7 @@ public abstract class Repository<T extends PersistableEntity> implements WithSim
         "from " + getEntityClass().getSimpleName()
             + " where " + getWhereClause(params.keySet()),
         getEntityClass());
-    params.forEach(query::setParameter);
+    params.forEach((param, value) -> query.setParameter(param.replace(".", ""), value));
     return query.getResultList();
   }
 
