@@ -9,8 +9,8 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
-        <javalin.version>5.4.2</javalin.version>
-        <jte.version>2.3.0</jte.version>
+        <javalin.version>5.6.0</javalin.version>
+        <jte.version>3.0.0</jte.version>
     </properties>
 
     <groupId>io.github.raniagus</groupId>
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.1-jre</version>
+            <version>32.0.1-jre</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
