@@ -9,8 +9,8 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
-        <javalin.version>5.6.0</javalin.version>
-        <jte.version>3.0.0</jte.version>
+        <javalin.version>5.6.1</javalin.version>
+        <jte.version>3.0.1</jte.version>
     </properties>
 
     <groupId>io.github.raniagus</groupId>
