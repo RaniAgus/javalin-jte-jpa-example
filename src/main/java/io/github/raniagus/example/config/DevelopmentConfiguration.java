@@ -12,7 +12,7 @@ import javax.inject.Named;
 public class DevelopmentConfiguration extends Configuration {
   @Provides
   @Named("DB")
-  protected Runnable connectToSimplePersistenceUnit() {
+  protected Runnable db() {
     return WithSimplePersistenceUnit::dispose;
   }
 

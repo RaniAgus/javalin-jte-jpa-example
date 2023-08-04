@@ -11,7 +11,7 @@ import javax.inject.Named;
 public class ProductionConfiguration extends Configuration {
   @Provides
   @Named("DB")
-  protected Runnable connectToSimplePersistenceUnit() {
+  protected Runnable db() {
     return () -> WithSimplePersistenceUnit.configure(properties -> properties
         .set("hibernate.connection.url", ConfigurationUtil.getRequiredEnv("DB_URL"))
         .set("hibernate.connection.username", ConfigurationUtil.getRequiredEnv("DB_USERNAME"))
