@@ -1,7 +1,8 @@
 package io.github.raniagus.example.controller;
 
-import static io.github.raniagus.example.enumeration.UserConstants.USER;
+import static io.github.raniagus.example.enumeration.UserFields.USER;
 
+import io.github.raniagus.example.enumeration.Routes;
 import io.github.raniagus.example.model.Role;
 import io.github.raniagus.example.model.User;
 import io.github.raniagus.example.repository.UserRepository;
@@ -18,11 +19,11 @@ public class HomeController implements Controller {
 
   @Inject
   public HomeController(Javalin app) {
-    app.get("/", this::index, Role.USER, Role.ADMIN);
+    app.get(Routes.HOME, this::index, Role.USER, Role.ADMIN);
   }
 
   public void index(Context ctx) {
-    User user = userRepository.findById(ctx.sessionAttribute(USER.getValue()))
+    User user = userRepository.findById(ctx.sessionAttribute(USER))
         .orElseThrow(NotFoundResponse::new);
 
     render(ctx, new HomeViewModel(user.getFirstName(),user.getRole() == Role.ADMIN));

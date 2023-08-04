@@ -1,6 +1,6 @@
 package io.github.raniagus.example.access;
 
-import static io.github.raniagus.example.enumeration.UserConstants.USER;
+import static io.github.raniagus.example.enumeration.UserFields.*;
 
 import io.github.raniagus.example.model.Role;
 import io.github.raniagus.example.model.User;
@@ -28,7 +28,7 @@ public class UserAccessManager implements AccessManager {
   public void manage(@NotNull Handler handler,
                      @NotNull Context context,
                      @NotNull Set<? extends RouteRole> set) throws Exception {
-    var user = userRepository.findById(context.sessionAttribute(USER.getValue()));
+    var user = userRepository.findById(context.sessionAttribute(USER));
     if (set.contains(Role.ANYONE) || user.map(User::getRole)
                                          .map(set::contains)
                                          .orElse(false)) {

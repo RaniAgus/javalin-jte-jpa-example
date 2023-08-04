@@ -1,5 +1,5 @@
-@import static io.github.raniagus.example.enumeration.ControllerConstants.*
-@import static io.github.raniagus.example.enumeration.UserConstants.*
+@import static io.github.raniagus.example.enumeration.QueryParams.*
+@import static io.github.raniagus.example.enumeration.UserFields.*
 
 @param io.github.raniagus.example.view.LoginViewModel vm
 
@@ -9,13 +9,13 @@ styles = @``,
 action = @`Login`,
 postUrl = "/login",
 children = @`
-    <input type="hidden" name="${REDIRECT.getValue()}" value="${vm.getRedirect()}">
+    <input type="hidden" name="${REDIRECT}" value="${vm.getRedirect()}">
 
     <label for="email">Email</label>
-    <input type="text" id="email" name="${EMAIL.getValue()}" placeholder="Email" value="${vm.getEmail()}" required autofocus>
+    <input type="text" id="email" name="${EMAIL}" placeholder="Email" value="${vm.getEmail()}" required autofocus>
 
     <label for="password">Password</label>
-    <input type="password" id="password" name="${PASSWORD.getValue()}" placeholder="Password" required>
+    <input type="password" id="password" name="${PASSWORD}" placeholder="Password" required>
 
     @if(vm.getError() != null)
         <div role="alert">${vm.getError()}</div>

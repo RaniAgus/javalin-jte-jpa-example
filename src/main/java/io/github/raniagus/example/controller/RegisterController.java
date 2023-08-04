@@ -1,13 +1,10 @@
 package io.github.raniagus.example.controller;
 
-import static io.github.raniagus.example.enumeration.ControllerConstants.ERROR;
-import static io.github.raniagus.example.enumeration.UserConstants.CONFIRM_PASSWORD;
-import static io.github.raniagus.example.enumeration.UserConstants.EMAIL;
-import static io.github.raniagus.example.enumeration.UserConstants.FIRST_NAME;
-import static io.github.raniagus.example.enumeration.UserConstants.LAST_NAME;
-import static io.github.raniagus.example.enumeration.UserConstants.PASSWORD;
+import static io.github.raniagus.example.enumeration.QueryParams.*;
+import static io.github.raniagus.example.enumeration.UserFields.*;
 import static io.javalin.validation.JavalinValidation.collectErrors;
 
+import io.github.raniagus.example.enumeration.Routes;
 import io.github.raniagus.example.model.Role;
 import io.github.raniagus.example.model.User;
 import io.github.raniagus.example.repository.UserRepository;
@@ -28,26 +25,26 @@ public class RegisterController implements Controller {
 
   @Inject
   public RegisterController(Javalin app) {
-    app.get("/register", this::renderRegister, Role.ADMIN);
-    app.post("/register", this::register, Role.ADMIN);
+    app.get(Routes.REGISTER, this::renderRegister, Role.ADMIN);
+    app.post(Routes.REGISTER, this::register, Role.ADMIN);
   }
 
   public void renderRegister(Context ctx) {
     render(ctx, new RegisterViewModel(
-        ctx.queryParam(FIRST_NAME.getValue()),
-        ctx.queryParam(LAST_NAME.getValue()),
-        ctx.queryParam(EMAIL.getValue()),
-        split(ctx.queryParamAsClass(ERROR.getValue(), String.class).getOrDefault(""), ",")
+        ctx.queryParam(FIRST_NAME),
+        ctx.queryParam(LAST_NAME),
+        ctx.queryParam(EMAIL),
+        split(ctx.queryParamAsClass(ERROR, String.class).getOrDefault(""), ",")
     ));
   }
 
   public void register(Context ctx) {
-    var firstName = ctx.formParamAsClass(FIRST_NAME.getValue(), String.class);
-    var lastName = ctx.formParamAsClass(LAST_NAME.getValue(), String.class);
-    var email = ctx.formParamAsClass(EMAIL.getValue(), String.class)
+    var firstName = ctx.formParamAsClass(FIRST_NAME, String.class);
+    var lastName = ctx.formParamAsClass(LAST_NAME, String.class);
+    var email = ctx.formParamAsClass(EMAIL, String.class)
         .check(e -> userRepository.findByEmail(e).isEmpty(), "Email already exists");
-    var password = ctx.formParamAsClass(PASSWORD.getValue(), String.class)
-        .check(p -> p.equals(ctx.formParam(CONFIRM_PASSWORD.getValue())), "Passwords do not match");
+    var password = ctx.formParamAsClass(PASSWORD, String.class)
+        .check(p -> p.equals(ctx.formParam(CONFIRM_PASSWORD)), "Passwords do not match");
 
     try {
       withTransaction(() -> {
@@ -59,13 +56,13 @@ public class RegisterController implements Controller {
             Role.USER);
         userRepository.save(user);
       });
-      redirect(ctx, "/register", Map.of("success", true));
+      redirect(ctx, Routes.REGISTER, Map.of("success", true));
     } catch (ValidationException e) {
-      redirect(ctx, "/register", Map.of(
-          FIRST_NAME.getValue(), ctx.formParamAsClass(FIRST_NAME.getValue(), String.class).getOrDefault(""),
-          LAST_NAME.getValue(), ctx.formParamAsClass(LAST_NAME.getValue(), String.class).getOrDefault(""),
-          EMAIL.getValue(), ctx.formParamAsClass(EMAIL.getValue(), String.class).getOrDefault(""),
-          ERROR.getValue(), collectErrors(firstName, lastName, email, password).values().stream()
+      redirect(ctx, Routes.REGISTER, Map.of(
+          FIRST_NAME, ctx.formParamAsClass(FIRST_NAME, String.class).getOrDefault(""),
+          LAST_NAME, ctx.formParamAsClass(LAST_NAME, String.class).getOrDefault(""),
+          EMAIL, ctx.formParamAsClass(EMAIL, String.class).getOrDefault(""),
+          ERROR, collectErrors(firstName, lastName, email, password).values().stream()
               .flatMap(List::stream)
               .map(ValidationError::getMessage)
               .collect(Collectors.joining(","))
