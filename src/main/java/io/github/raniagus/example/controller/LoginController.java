@@ -1,6 +1,5 @@
 package io.github.raniagus.example.controller;
 
-import io.github.raniagus.example.config.ConfigurationUtil;
 import io.github.raniagus.example.model.Role;
 import io.github.raniagus.example.repository.UserRepository;
 import io.github.raniagus.example.view.LoginViewModel;
@@ -24,7 +23,7 @@ import static io.github.raniagus.example.enumeration.UserConstants.USER;
 import static io.javalin.validation.JavalinValidation.collectErrors;
 
 @Singleton
-public class LoginController extends Controller {
+public class LoginController implements Controller {
   private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
   private UserRepository userRepository;
@@ -76,7 +75,7 @@ public class LoginController extends Controller {
 
   public void notFound(NotFoundResponse e, Context ctx) {
     ctx.status(HttpStatus.NOT_FOUND);
-    if (!ConfigurationUtil.isProduction()) {
+    if (!isProduction()) {
       log.warn("Not found {}", ctx.req().getRequestURI(), e);
     }
     render(ctx, new NotFoundViewModel());

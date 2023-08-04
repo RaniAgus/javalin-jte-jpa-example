@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class RegisterController extends Controller {
+public class RegisterController implements Controller {
   private UserRepository userRepository;
 
   @Inject

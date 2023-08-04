@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class HomeController extends Controller {
+public class HomeController implements Controller {
   private UserRepository userRepository;
 
   @Inject

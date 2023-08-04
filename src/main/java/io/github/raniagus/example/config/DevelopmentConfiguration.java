@@ -10,22 +10,20 @@ import java.nio.file.Path;
 import javax.inject.Named;
 
 public class DevelopmentConfiguration extends Configuration {
-  @Provides
-  @Named("DB")
+
+  @Provides @Singleton @Named("DB")
   protected Runnable db() {
     return WithSimplePersistenceUnit::dispose;
   }
 
-  @Provides
-  @Singleton
+  @Provides @Singleton
   protected TemplateEngine templateEngine() {
     return TemplateEngine.create(new DirectoryCodeResolver(Path.of("src","main", "jte")), ContentType.Html);
   }
 
-  @Provides
-  @Singleton
-  @Named("PORT")
+  @Provides @Singleton @Named("PORT")
   protected Integer port() {
     return 8080;
   }
+
 }
