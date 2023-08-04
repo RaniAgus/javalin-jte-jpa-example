@@ -1,4 +1,4 @@
-@import static io.github.raniagus.example.enumeration.QueryParams.*
+@import static io.github.raniagus.example.enumeration.Params.*
 @import static io.github.raniagus.example.enumeration.UserFields.*
 
 @param io.github.raniagus.example.view.LoginViewModel vm

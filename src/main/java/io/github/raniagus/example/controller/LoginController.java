@@ -16,7 +16,7 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static io.github.raniagus.example.enumeration.QueryParams.*;
+import static io.github.raniagus.example.enumeration.Params.*;
 import static io.github.raniagus.example.enumeration.UserFields.*;
 import static io.javalin.validation.JavalinValidation.collectErrors;
 

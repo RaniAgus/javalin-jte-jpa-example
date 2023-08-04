@@ -1,6 +1,6 @@
 package io.github.raniagus.example.controller;
 
-import static io.github.raniagus.example.enumeration.QueryParams.*;
+import static io.github.raniagus.example.enumeration.Params.*;
 import static io.github.raniagus.example.enumeration.UserFields.*;
 import static io.javalin.validation.JavalinValidation.collectErrors;
 
