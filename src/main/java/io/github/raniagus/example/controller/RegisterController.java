@@ -59,9 +59,9 @@ public class RegisterController implements Controller {
             Role.USER);
         userRepository.save(user);
       });
-      ctx.redirect("/register?success=true");
+      redirect(ctx, "/register", Map.of("success", true));
     } catch (ValidationException e) {
-      ctx.redirect("/register?" + encode(Map.of(
+      redirect(ctx, "/register", Map.of(
           FIRST_NAME.getValue(), ctx.formParamAsClass(FIRST_NAME.getValue(), String.class).getOrDefault(""),
           LAST_NAME.getValue(), ctx.formParamAsClass(LAST_NAME.getValue(), String.class).getOrDefault(""),
           EMAIL.getValue(), ctx.formParamAsClass(EMAIL.getValue(), String.class).getOrDefault(""),
@@ -69,7 +69,7 @@ public class RegisterController implements Controller {
               .flatMap(List::stream)
               .map(ValidationError::getMessage)
               .collect(Collectors.joining(","))
-      )));
+      ));
     }
   }
 

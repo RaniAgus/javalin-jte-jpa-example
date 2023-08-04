@@ -55,22 +55,22 @@ public class LoginController implements Controller {
           .orElseThrow(() -> new NotFoundResponse("Invalid email or password"));
 
       ctx.sessionAttribute(USER.getValue(), user.getId());
-      ctx.redirect(redirect);
+      redirect(ctx, redirect);
     } catch (ValidationException e) {
       ctx.status(HttpStatus.BAD_REQUEST);
       ctx.json(collectErrors(email, password));
     } catch (NotFoundResponse e) {
-      ctx.redirect("/login?" + encode(Map.of(
+      redirect(ctx, "/login", Map.of(
           EMAIL.getValue(), ctx.formParamAsClass(EMAIL.getValue(), String.class).getOrDefault(""),
           REDIRECT.getValue(), redirect,
           ERROR.getValue(), e.getMessage()
-      )));
+      ));
     }
   }
 
   public void logout(Context ctx) {
     ctx.consumeSessionAttribute(USER.getValue());
-    ctx.redirect("/login");
+    redirect(ctx, "/login");
   }
 
   public void notFound(NotFoundResponse e, Context ctx) {

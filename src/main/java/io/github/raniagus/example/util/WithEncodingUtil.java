@@ -15,9 +15,9 @@ public interface WithEncodingUtil {
     return URLEncoder.encode(String.join("", strings), StandardCharsets.UTF_8);
   }
 
-  default String encode(Map<String, String> params) {
+  default String encode(Map<String, Object> params) {
     return params.entrySet().stream()
-        .map(e -> encode(e.getKey()) + "=" + encode(e.getValue()))
+        .map(e -> encode(e.getKey()) + "=" + encode(e.getValue().toString()))
         .collect(Collectors.joining("&"));
   }
 }

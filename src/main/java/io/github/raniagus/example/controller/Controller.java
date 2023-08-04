@@ -12,4 +12,12 @@ public interface Controller extends WithSimplePersistenceUnit, WithEncodingUtil,
   default void render(Context ctx, ViewModel viewModel) {
     ctx.render(viewModel.getTemplateName(), Map.of("vm", viewModel));
   }
+
+  default void redirect(Context ctx, String location) {
+    ctx.redirect(location);
+  }
+
+  default void redirect(Context ctx, String location, Map<String, Object> queryParams) {
+    ctx.redirect(location + "?" + encode(queryParams));
+  }
 }
