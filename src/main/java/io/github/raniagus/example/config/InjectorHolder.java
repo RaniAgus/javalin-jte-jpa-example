@@ -2,6 +2,9 @@ package io.github.raniagus.example.config;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import io.github.raniagus.example.controller.HomeController;
+import io.github.raniagus.example.controller.LoginController;
+import io.github.raniagus.example.controller.RegisterController;
 
 /**
  * Esta clase es un service locator: nos permite inyectar dependencias en
@@ -12,7 +15,14 @@ import com.google.inject.Injector;
 public enum InjectorHolder {
   INSTANCE;
 
-  private final Injector injector = Guice.createInjector(Configuration.create());
+  private final Injector injector = Guice.createInjector(
+      ConfigurationUtil.isProduction() ? new ProductionConfiguration() : new DevelopmentConfiguration());
+
+  InjectorHolder() {
+    injector.getInstance(HomeController.class);
+    injector.getInstance(LoginController.class);
+    injector.getInstance(RegisterController.class);
+  }
 
   public static Injector getInjector() {
     return INSTANCE.injector;

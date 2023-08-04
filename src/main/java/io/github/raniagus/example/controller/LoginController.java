@@ -1,8 +1,11 @@
 package io.github.raniagus.example.controller;
 
+import io.github.raniagus.example.config.ConfigurationUtil;
+import io.github.raniagus.example.model.Role;
 import io.github.raniagus.example.repository.UserRepository;
 import io.github.raniagus.example.view.LoginViewModel;
 import io.github.raniagus.example.view.NotFoundViewModel;
+import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
@@ -13,7 +16,6 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static io.github.raniagus.example.config.Configuration.isProduction;
 import static io.github.raniagus.example.enumeration.ControllerConstants.ERROR;
 import static io.github.raniagus.example.enumeration.ControllerConstants.REDIRECT;
 import static io.github.raniagus.example.enumeration.UserConstants.EMAIL;
@@ -25,11 +27,14 @@ import static io.javalin.validation.JavalinValidation.collectErrors;
 public class LoginController extends Controller {
   private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
-  private final UserRepository userRepository;
+  private UserRepository userRepository;
 
   @Inject
-  public LoginController(UserRepository userRepository) {
-    this.userRepository = userRepository;
+  public LoginController(Javalin app) {
+    app.get("/login", this::renderLogin, Role.ANYONE);
+    app.post("/login", this::login, Role.ANYONE);
+    app.post("/logout", this::logout, Role.USER, Role.ADMIN);
+    app.exception(NotFoundResponse.class, this::notFound);
   }
 
   public void renderLogin(Context ctx) {
@@ -71,9 +76,14 @@ public class LoginController extends Controller {
 
   public void notFound(NotFoundResponse e, Context ctx) {
     ctx.status(HttpStatus.NOT_FOUND);
-    if (!isProduction()) {
+    if (!ConfigurationUtil.isProduction()) {
       log.warn("Not found {}", ctx.req().getRequestURI(), e);
     }
     render(ctx, new NotFoundViewModel());
+  }
+
+  @Inject
+  public void setUserRepository(UserRepository userRepository) {
+    this.userRepository = userRepository;
   }
 }

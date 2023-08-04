@@ -12,6 +12,7 @@ import io.github.raniagus.example.model.Role;
 import io.github.raniagus.example.model.User;
 import io.github.raniagus.example.repository.UserRepository;
 import io.github.raniagus.example.view.RegisterViewModel;
+import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationError;
 import io.javalin.validation.ValidationException;
@@ -23,11 +24,12 @@ import javax.inject.Singleton;
 
 @Singleton
 public class RegisterController extends Controller {
-  private final UserRepository userRepository;
+  private UserRepository userRepository;
 
   @Inject
-  public RegisterController(UserRepository userRepository) {
-    this.userRepository = userRepository;
+  public RegisterController(Javalin app) {
+    app.get("/register", this::renderRegister, Role.ADMIN);
+    app.post("/register", this::register, Role.ADMIN);
   }
 
   public void renderRegister(Context ctx) {
@@ -69,5 +71,10 @@ public class RegisterController extends Controller {
               .collect(Collectors.joining(","))
       )));
     }
+  }
+
+  @Inject
+  public void setUserRepository(UserRepository userRepository) {
+    this.userRepository = userRepository;
   }
 }
